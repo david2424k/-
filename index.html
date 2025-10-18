@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Design Studio - Проектная компания будущего</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0A0E27;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glow {
+            box-shadow: 0 0 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateY(-4px);
+        }
+        
+        .ai-grid {
+            background-image: 
+                linear-gradient(rgba(102, 126, 234, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(102, 126, 234, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+        
+        .pulse-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        
+        .animate-in {
+            animation: slideIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        .gradient-shift {
+            background: linear-gradient(135deg, #667EEA, #764BA2, #F093FB, #667EEA);
+            background-size: 300% 300%;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        
+        .animate-scale {
+            animation: scaleIn 0.6s ease-out forwards;
+        }
+        
+        @keyframes scaleIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .glow-pulse {
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.3); }
+            50% { box-shadow: 0 0 60px rgba(102, 126, 234, 0.6); }
+        }
+        
+        .rotate-slow {
+            animation: rotateSlow 20s linear infinite;
+        }
+        
+        @keyframes rotateSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-opacity-90 backdrop-blur-md" style="background: rgba(10, 14, 39, 0.9);">
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold gradient-text">AI Design Studio</div>
+                <div class="hidden md:flex space-x-12 text-sm font-light">
+                    <a href="#services" class="hover:text-purple-400 transition">Услуги</a>
+                    <a href="#ai" class="hover:text-purple-400 transition">AI Технологии</a>
+                    <a href="#projects" class="hover:text-purple-400 transition">Проекты</a>
+                    <a href="#contact" class="hover:text-purple-400 transition">Контакты</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="ai-grid absolute inset-0 opacity-20"></div>
+        <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-3xl opacity-20 float"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-96 h-96 bg-blue-600 rounded-full filter blur-3xl opacity-20 float" style="animation-delay: -3s;"></div>
+        <div id="particles" class="absolute inset-0"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+            <div class="flex items-center justify-center gap-2 mb-8 fade-in">
+                <div class="w-2 h-2 rounded-full bg-purple-500 pulse-dot"></div>
+                <span class="text-sm font-light tracking-widest text-purple-300">AI-POWERED DESIGN</span>
+            </div>
+            
+            <h1 class="font-display text-7xl md:text-9xl font-black mb-8 leading-none fade-in" style="animation-delay: 0.2s;">
+                <span id="typingText"></span><br/>
+                <span class="gradient-text gradient-shift">будущее</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl font-light text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed fade-in" style="animation-delay: 0.4s;">
+                Мы объединяем экспертизу в проектировании с возможностями искусственного интеллекта для создания инновационных решений
+            </p>
+            
+            <div class="flex flex-col md:flex-row gap-6 justify-center fade-in" style="animation-delay: 0.6s;">
+                <a href="#contact" class="btn-primary px-12 py-5 rounded-full text-lg font-bold">
+                    Начать проект
+                </a>
+                <a href="#ai" class="px-12 py-5 rounded-full text-lg font-bold border-2 border-purple-500 hover:bg-purple-500 hover:bg-opacity-10 transition">
+                    Узнать больше
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-20">
+                <h2 class="font-display text-6xl font-black mb-6 scroll-reveal">Наши услуги</h2>
+                <p class="text-xl text-gray-400 font-light max-w-2xl">
+                    Комплексные решения для вашего бизнеса
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card p-10 rounded-3xl scroll-reveal glow-pulse" style="animation-delay: 0.1s;">
+                    <div class="text-5xl mb-6 float">🏗️</div>
+                    <h3 class="text-2xl font-bold mb-4">Архитектурное<br/>проектирование</h3>
+                    <p class="text-gray-400 font-light leading-relaxed">
+                        Создаем архитектурные решения с использованием AI для оптимизации пространства и энергоэффективности
+                    </p>
+                </div>
+                
+                <div class="card p-10 rounded-3xl scroll-reveal glow-pulse" style="animation-delay: 0.2s;">
+                    <div class="text-5xl mb-6 float" style="animation-delay: -2s;">🎨</div>
+                    <h3 class="text-2xl font-bold mb-4">Дизайн<br/>интерьеров</h3>
+                    <p class="text-gray-400 font-light leading-relaxed">
+                        AI-генерация концепций и 3D-визуализация помогают создать идеальное пространство
+                    </p>
+                </div>
+                
+                <div class="card p-10 rounded-3xl scroll-reveal glow-pulse" style="animation-delay: 0.3s;">
+                    <div class="text-5xl mb-6 float" style="animation-delay: -4s;">⚡</div>
+                    <h3 class="text-2xl font-bold mb-4">Умные<br/>системы</h3>
+                    <p class="text-gray-400 font-light leading-relaxed">
+                        Интеграция AI-систем управления зданием, освещением и климатом
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Features Section -->
+    <section id="ai" class="py-32 relative bg-gradient-to-b from-transparent to-purple-900 to-transparent bg-opacity-5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-20 items-center">
+                <div>
+                    <div class="inline-block px-6 py-2 rounded-full bg-purple-500 bg-opacity-20 text-purple-300 text-sm font-bold mb-8 scroll-reveal">
+                        ТЕХНОЛОГИИ AI
+                    </div>
+                    <h2 class="font-display text-6xl font-black mb-8 leading-tight scroll-reveal">
+                        Искусственный интеллект в проектировании
+                    </h2>
+                    <p class="text-xl text-gray-300 font-light leading-relaxed mb-12 scroll-reveal">
+                        Наши AI-инструменты анализируют тысячи проектов, оптимизируют планировки и генерируют инновационные решения за считанные минуты
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4 scroll-reveal" style="animation-delay: 0.1s;">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-500 bg-opacity-20 flex items-center justify-center flex-shrink-0 glow-pulse">
+                                <span class="text-2xl">🧠</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">Генеративный дизайн</h4>
+                                <p class="text-gray-400 font-light">AI создает сотни вариантов на основе ваших требований</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 scroll-reveal" style="animation-delay: 0.2s;">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-500 bg-opacity-20 flex items-center justify-center flex-shrink-0 glow-pulse">
+                                <span class="text-2xl">📊</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">Анализ эффективности</h4>
+                                <p class="text-gray-400 font-light">Предсказание энергопотребления и комфорта</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 scroll-reveal" style="animation-delay: 0.3s;">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-500 bg-opacity-20 flex items-center justify-center flex-shrink-0 glow-pulse">
+                                <span class="text-2xl">🎯</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">Умная оптимизация</h4>
+                                <p class="text-gray-400 font-light">Автоматическая оптимизация планировок и конструкций</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative scroll-reveal">
+                    <div class="card p-8 rounded-3xl glow-pulse">
+                        <img src="keys/ai-dashboard?prompt=futuristic%20AI%20design%20software%20interface%20dashboard%20with%20holographic%20blueprints%20and%20data%20visualization%20purple%20blue%20gradient%20modern%20tech" alt="AI Dashboard" class="w-full h-96 object-cover rounded-2xl mb-6">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="bg-purple-500 bg-opacity-10 p-4 rounded-xl text-center hover:scale-110 transition-transform duration-300">
+                                <div class="text-3xl font-black gradient-text counter" data-target="2.5">0</div>
+                                <div class="text-xs text-gray-400 mt-1">Быстрее</div>
+                            </div>
+                            <div class="bg-purple-500 bg-opacity-10 p-4 rounded-xl text-center hover:scale-110 transition-transform duration-300">
+                                <div class="text-3xl font-black gradient-text counter" data-target="98">0</div>
+                                <div class="text-xs text-gray-400 mt-1">Точность</div>
+                            </div>
+                            <div class="bg-purple-500 bg-opacity-10 p-4 rounded-xl text-center hover:scale-110 transition-transform duration-300">
+                                <div class="text-3xl font-black gradient-text counter" data-target="500">0</div>
+                                <div class="text-xs text-gray-400 mt-1">Проектов</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-20">
+                <h2 class="font-display text-6xl font-black mb-6 scroll-reveal">Избранные проекты</h2>
+                <p class="text-xl text-gray-400 font-light max-w-2xl">
+                    Реализованные решения с использованием AI
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card rounded-3xl overflow-hidden group cursor-pointer scroll-reveal glow-pulse">
+                    <div class="relative overflow-hidden">
+                        <img src="keys/modern-building?prompt=ultra%20modern%20sustainable%20office%20building%20with%20glass%20facade%20and%20green%20walls%20futuristic%20architecture%20evening%20light" alt="Project 1" class="w-full h-96 object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-3">EcoTech Center</h3>
+                        <p class="text-gray-400 font-light">AI-оптимизированное офисное здание с нулевым энергопотреблением</p>
+                    </div>
+                </div>
+                
+                <div class="card rounded-3xl overflow-hidden group cursor-pointer scroll-reveal glow-pulse" style="animation-delay: 0.2s;">
+                    <div class="relative overflow-hidden">
+                        <img src="keys/smart-interior?prompt=luxurious%20smart%20home%20interior%20with%20AI%20controlled%20lighting%20minimalist%20design%20high%20tech%20elements%20purple%20accent%20lighting" alt="Project 2" class="w-full h-96 object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-3">Smart Residence</h3>
+                        <p class="text-gray-400 font-light">Жилой комплекс с интегрированными AI-системами управления</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 relative">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="font-display text-6xl md:text-8xl font-black mb-8">
+                Начнем<br/>
+                <span class="gradient-text">сотрудничество?</span>
+            </h2>
+            <p class="text-xl text-gray-300 font-light mb-12">
+                Расскажите о вашем проекте, и мы покажем, как AI может его улучшить
+            </p>
+            
+            <form class="max-w-2xl mx-auto space-y-6" id="contactForm">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <input type="text" placeholder="Ваше имя" class="w-full px-6 py-5 rounded-2xl bg-white bg-opacity-5 border border-gray-700 focus:border-purple-500 focus:outline-none transition" required>
+                    <input type="email" placeholder="Email" class="w-full px-6 py-5 rounded-2xl bg-white bg-opacity-5 border border-gray-700 focus:border-purple-500 focus:outline-none transition" required>
+                </div>
+                <textarea placeholder="Расскажите о вашем проекте" rows="5" class="w-full px-6 py-5 rounded-2xl bg-white bg-opacity-5 border border-gray-700 focus:border-purple-500 focus:outline-none transition" required></textarea>
+                <button type="submit" class="btn-primary w-full px-12 py-5 rounded-full text-lg font-bold">
+                    Отправить заявку
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-2xl font-bold gradient-text">AI Design Studio</div>
+                <div class="text-sm text-gray-400 font-light">
+                    © 2025 AI Design Studio. Проектируем будущее с искусственным интеллектом
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Typing effect
+        const text = 'Проектируем';
+        const typingElement = document.getElementById('typingText');
+        let i = 0;
+        
+        function typeWriter() {
+            if (i < text.length) {
+                typingElement.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        
+        setTimeout(typeWriter, 500);
+        
+        // Particle system
+        const particlesContainer = document.getElementById('particles');
+        
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            
+            particlesContainer.appendChild(particle);
+            
+            const tx = (Math.random() - 0.5) * 200;
+            const ty = (Math.random() - 0.5) * 200;
+            
+            particle.animate([
+                { transform: 'translate(0, 0)', opacity: 0 },
+                { opacity: 0.6, offset: 0.1 },
+                { transform: `translate(${tx}px, ${ty}px)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 3000 + 2000,
+                easing: 'cubic-bezier(0, 0.5, 0.5, 1)'
+            }).onfinish = () => particle.remove();
+        }
+        
+        setInterval(createParticle, 200);
+        
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('slide-in-left')) {
+                        entry.target.classList.add('animate-in');
+                    } else if (entry.target.classList.contains('slide-in-right')) {
+                        entry.target.classList.add('animate-in');
+                    } else if (entry.target.classList.contains('scale-in')) {
+                        entry.target.classList.add('animate-scale');
+                    } else {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.style.transition = 'all 0.8s ease-out';
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            observer.observe(el);
+        });
+        
+        // Animated counters
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseFloat(counter.dataset.target);
+                    const isDecimal = target.toString().includes('.');
+                    const duration = 2000;
+                    const steps = 60;
+                    const increment = target / steps;
+                    let current = 0;
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.textContent = isDecimal ? target.toFixed(1) + 'x' : Math.ceil(target) + (target >= 100 ? '%' : '+');
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = isDecimal ? current.toFixed(1) + 'x' : Math.ceil(current) + (target >= 100 ? '%' : '+');
+                        }
+                    }, duration / steps);
+                    
+                    counterObserver.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        document.querySelectorAll('.counter').forEach(counter => {
+            counterObserver.observe(counter);
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: e.target[0].value,
+                email: e.target[1].value,
+                message: e.target[2].value
+            };
+            
+            try {
+                const response = await fetch(`${window.HATCH_CONFIG.apiBaseUrl}/services/send_email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
+                    e.target.reset();
+                } else {
+                    alert('Произошла ошибка. Пожалуйста, попробуйте позже.');
+                }
+            } catch (error) {
+                alert('Произошла ошибка при отправке. Пожалуйста, попробуйте позже.');
+            }
+        });
+
+        // Enhanced parallax effect
+        let ticking = false;
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrolled = window.pageYOffset;
+                    
+                    // Grid parallax
+                    const parallaxElements = document.querySelectorAll('.ai-grid');
+                    parallaxElements.forEach(el => {
+                        el.style.transform = `translateY(${scrolled * 0.5}px)`;
+                    });
+                    
+                    // Floating blobs parallax
+                    const blobs = document.querySelectorAll('.float');
+                    blobs.forEach((blob, index) => {
+                        const speed = (index + 1) * 0.1;
+                        blob.style.transform = `translateY(${scrolled * speed}px)`;
+                    });
+                    
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+        
+        // Mouse move effect on cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
